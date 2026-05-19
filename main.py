@@ -123,22 +123,33 @@ class FishingAgent:
             return None
 
     def is_bite(self):
+        # 抛竿后前 4 秒不检测咬钩，防止误判
+        if time.time() - self.cast_time < 4:
+            return False
+    
         if not self.lure_position or self.screen.cur_imgHSV is None:
             return False
-            
+    
         x, y = self.lure_position
+    
         roi_size = 15
-        roi = self.screen.cur_imgHSV[max(0, y-roi_size):y+roi_size, 
-                                    max(0, x-roi_size):x+roi_size]
-        
+        roi = self.screen.cur_imgHSV[
+            max(0, y - roi_size): y + roi_size,
+            max(0, x - roi_size): x + roi_size
+        ]
+    
         if roi.size == 0:
             return False
-            
-        avg_value = np.mean(roi[:, :, 2])   # V通道亮度
-        
-        if avg_value > 145 or avg_value < 55:
+    
+        avg_value = np.mean(roi[:, :, 2])
+    
+        # 先打印，不要急着 return True
+        print(f"浮标区域亮度: {avg_value:.1f}")
+    
+        if avg_value > 180 or avg_value < 35:
             print(f"⚡ 检测到咬钩！亮度: {avg_value:.1f}")
             return True
+    
         return False
 
     def pull_line(self):
