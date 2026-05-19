@@ -153,8 +153,18 @@ class FishingAgent:
         return False
 
     def pull_line(self):
-        print("🎣 咬钩！右键收杆...")
-        pyautogui.rightClick()
+        if not self.lure_position:
+            return False
+    
+        x, y = self.lure_position
+    
+        # lure_position 是窗口内部坐标，要加上窗口左上角坐标
+        screen_x = self.screen.window.left + x
+        screen_y = self.screen.window.top + y
+    
+        print(f"咬钩！右键收杆: ({screen_x}, {screen_y})")
+        pyautogui.rightClick(screen_x, screen_y)
+    
         time.sleep(3.0)
         return True
 
