@@ -8,7 +8,7 @@ from threading import Thread
 
 
 class ScreenCapture:
-    def __init__(self, window_title="World of Warcraft"):
+    def __init__(self, window_title="魔兽世界"):
         self.window_title = window_title
         self.sct = mss.mss()
         self.window = None
@@ -138,7 +138,7 @@ class FishingAgent:
 
 # ====================== 主程序 ======================
 if __name__ == "__main__":
-    screen = ScreenCapture("World of Warcraft")
+    screen = ScreenCapture("魔兽世界")
     agent = FishingAgent(screen)
 
     if screen.select_window():
